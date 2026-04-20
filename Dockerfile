@@ -1,9 +1,10 @@
 ARG ALPINE_VER=3.19
 ARG GOLANG_VER=1.22
+ARG LSIO_BASE_TAG=latest
 
 #--------------#
 
-FROM lscr.io/linuxserver/baseimage-alpine:${ALPINE_VER} AS base
+FROM lscr.io/linuxserver/baseimage-alpine:${LSIO_BASE_TAG} AS base
 
 #--------------#
 
@@ -33,7 +34,7 @@ RUN chmod a+x \
 
 #--------------#
 
-FROM base As publisher
+FROM base AS publisher
 
 LABEL maintainer="kingcc"
 LABEL org.opencontainers.image.source=https://github.com/kingcc/warproxy

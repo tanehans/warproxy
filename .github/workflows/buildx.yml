@@ -22,18 +22,25 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Initial Buildx
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile
-          tags: ${{ env.IMAGE_NAME }}:testing
-          platforms: linux/amd64,linux/arm64
+      - name: Resolve base image tag
+        id: base_tag
+        run: |
+          set -euo pipefail
+          for tag in 3.22 3.21 3.20 3.19; do
+            if docker buildx imagetools inspect ghcr.io/linuxserver/baseimage-alpine:${tag} >/dev/null 2>&1; then
+              echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+              echo "Using base image tag ${tag}"
+              exit 0
+            fi
+          done
+          echo "No compatible ghcr.io/linuxserver/baseimage-alpine tag found" >&2
+          exit 1
       - name: Load Built Image and Test
         run: |
           docker buildx build \
             -t ${{ env.IMAGE_NAME }}:testing \
             --platform=linux/amd64 \
+            --build-arg LSIO_BASE_TAG=${{ steps.base_tag.outputs.tag }} \
             --load \
             .
           CID=$(docker run -d ${{ env.IMAGE_NAME }}:testing)
@@ -52,6 +59,8 @@ jobs:
         with:
           context: .
           file: Dockerfile
+          build-args: |
+            LSIO_BASE_TAG=${{ steps.base_tag.outputs.tag }}
           tags: |
             ${{ env.IMAGE_NAME }}:latest
           platforms: linux/amd64,linux/arm64

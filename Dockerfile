@@ -1,14 +1,13 @@
-ARG ALPINE_VER=3.19
 ARG GOLANG_VER=1.22
-ARG LSIO_BASE_TAG=latest
+ARG LSIO_BASE_TAG=3.22
 
 #--------------#
 
-FROM lscr.io/linuxserver/baseimage-alpine:${LSIO_BASE_TAG} AS base
+FROM ghcr.io/linuxserver/baseimage-alpine:${LSIO_BASE_TAG} AS base
 
 #--------------#
 
-FROM golang:${GOLANG_VER}-alpine${ALPINE_VER} AS wireproxy-builder
+FROM golang:${GOLANG_VER}-alpine AS wireproxy-builder
 RUN go install github.com/pufferffish/wireproxy/cmd/wireproxy@latest
 
 #--------------#

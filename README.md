@@ -55,3 +55,11 @@ When you restart container, it will update your account info and re-generate con
 ## Thanks
 * [105PM](https://github.com/105PM/docker-warproxy)
 * [by275 (docker-dpitunnel)](https://github.com/by275/docker-dpitunnel)
+
+## Fork maintenance
+
+This fork includes multi-arch image publishing (`amd64` + `arm64`) in GitHub Actions.
+
+The workflow `.github/workflows/sync-upstream.yml` syncs this fork from `kingcc/warproxy` on a schedule and via manual trigger.
+
+If upstream introduces conflicts with fork-only changes, the sync workflow fails and needs a manual merge resolution.

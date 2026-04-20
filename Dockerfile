@@ -9,6 +9,7 @@ FROM ghcr.io/linuxserver/baseimage-alpine:${LSIO_BASE_TAG} AS base
 #--------------#
 
 FROM golang:${GOLANG_VER}-alpine AS wireproxy-builder
+ARG WIREPROXY_VER
 RUN GOTOOLCHAIN=auto go install github.com/pufferffish/wireproxy/cmd/wireproxy@${WIREPROXY_VER}
 
 #--------------#

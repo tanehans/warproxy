@@ -3,7 +3,7 @@ ARG GOLANG_VER=1.22
 
 #--------------#
 
-FROM ghcr.io/linuxserver/baseimage-alpine:${ALPINE_VER} AS base
+FROM lscr.io/linuxserver/baseimage-alpine:${ALPINE_VER} AS base
 
 #--------------#
 
